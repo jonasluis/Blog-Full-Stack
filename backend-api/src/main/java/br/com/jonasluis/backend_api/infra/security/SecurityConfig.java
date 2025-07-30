@@ -27,6 +27,9 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( authorize -> authorize
                     .requestMatchers(HttpMethod.POST,"/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/upload").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
                     .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
