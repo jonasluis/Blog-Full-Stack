@@ -5,8 +5,6 @@ import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterRequest;
 import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterResponse;
 import br.com.jonasluis.backend_api.domain.user.entity.User;
 import br.com.jonasluis.backend_api.domain.user.entity.enums.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserMapper {
