@@ -8,11 +8,17 @@ import br.com.jonasluis.backend_api.domain.user.mapper.UserMapper;
 import br.com.jonasluis.backend_api.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
 public class UserRegisterUseCase {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -24,12 +30,7 @@ public class UserRegisterUseCase {
         if (!UserRole.isValid(dto.role())) {
             throw new IllegalArgumentException("Role inválida");
         }
-
-        User user = new User();
-        user.setUsername(dto.username());
-        user.setPassword(dto.password());
-        user.setRole(UserRole.valueOf(dto.role().toUpperCase()));
-
+        var user = UserMapper.toEntity(dto, passwordEncoder);
         return userRepository.save(user);
     }
 
