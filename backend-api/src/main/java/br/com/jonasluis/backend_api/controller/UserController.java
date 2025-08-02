@@ -1,9 +1,12 @@
 package br.com.jonasluis.backend_api.controller;
 
+import br.com.jonasluis.backend_api.domain.user.dto.TokenRefreshRequest;
+import br.com.jonasluis.backend_api.domain.user.dto.TokenRefreshResponse;
 import br.com.jonasluis.backend_api.domain.user.dto.UserLoginRequest;
 import br.com.jonasluis.backend_api.domain.user.dto.UserLoginResponse;
 import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterRequest;
 import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterResponse;
+import br.com.jonasluis.backend_api.domain.user.service.TokenRefreshUseCase;
 import br.com.jonasluis.backend_api.domain.user.service.UserLoginUseCase;
 import br.com.jonasluis.backend_api.domain.user.service.UserRegisterUseCase;
 import jakarta.validation.Valid;
@@ -25,6 +28,8 @@ public class UserController {
     private UserRegisterUseCase userRegister;
     @Autowired
     private UserLoginUseCase userLogin;
+    @Autowired
+    private TokenRefreshUseCase tokenRefresh;
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest request){
@@ -38,6 +43,12 @@ public class UserController {
         var login = userLogin.executeAndReturnDTO(loginRequest);
 
         return ResponseEntity.ok(login);
+    }
+    
+    @PostMapping("/refresh-token")
+    public ResponseEntity<TokenRefreshResponse> refreshToken(@RequestBody @Valid TokenRefreshRequest request) {
+        var response = tokenRefresh.execute(request);
+        return ResponseEntity.ok(response);
     }
 
 }

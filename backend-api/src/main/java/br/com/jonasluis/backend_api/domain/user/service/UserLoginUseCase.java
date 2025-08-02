@@ -12,6 +12,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+
 @Service
 @Transactional
 public class UserLoginUseCase {
@@ -34,12 +39,16 @@ public class UserLoginUseCase {
        return user;
     }
 
-
-
     public UserLoginResponse executeAndReturnDTO(UserLoginRequest dto) {
         User user = execute(dto);
+        
         String token = tokenService.generateToken(user);
-
-        return UserMapper.toLoginResponse(user, token);
+        String refreshToken = tokenService.generateRefreshToken(user);
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        Instant expiresAt = LocalDateTime.now()
+                .plusSeconds(tokenService.getAccessTokenExpirationSeconds())
+                .atZone(zoneId)
+                .toInstant();
+        return UserMapper.toLoginResponse(user, token, refreshToken, expiresAt);
     }
 }

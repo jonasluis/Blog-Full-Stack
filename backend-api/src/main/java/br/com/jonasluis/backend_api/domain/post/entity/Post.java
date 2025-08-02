@@ -31,8 +31,11 @@ public class Post {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+    @Column(columnDefinition = "TEXT")
     private String summary;
+    @Column(columnDefinition = "TEXT")
     private String content;
+    @Column(length = 1000)
     private String coverImageUrl;
 
     @ElementCollection
