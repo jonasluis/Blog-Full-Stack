@@ -31,6 +31,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/posts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
                     .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
