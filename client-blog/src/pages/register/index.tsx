@@ -43,7 +43,7 @@ export default function RegisterPage() {
     setMessage(null);
     
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/register`, {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/users/register`, {
         username: form.username,
         password: form.password,
         role: "CLIENTE",
