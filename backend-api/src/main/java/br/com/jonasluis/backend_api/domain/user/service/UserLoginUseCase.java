@@ -7,7 +7,6 @@ import br.com.jonasluis.backend_api.domain.user.mapper.UserMapper;
 import br.com.jonasluis.backend_api.domain.user.repository.UserRepository;
 import br.com.jonasluis.backend_api.infra.security.TokenService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,18 +19,24 @@ import java.time.ZoneId;
 @Transactional
 public class UserLoginUseCase {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TokenService tokenService;
+
+    private final PasswordEncoder passwordEncoder;
+
+
+    private final TokenService tokenService;
+
+    public UserLoginUseCase(UserRepository userRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+    }
 
     public User execute(UserLoginRequest dto){
         var user = userRepository.findByUsername(dto.username())
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + dto.username()));;
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + dto.username()));
         if (!passwordEncoder.matches(dto.password(), user.getPassword())) {
             throw new IllegalArgumentException("Senha inválida");
         }

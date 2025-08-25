@@ -10,7 +10,7 @@ import br.com.jonasluis.backend_api.domain.user.service.TokenRefreshUseCase;
 import br.com.jonasluis.backend_api.domain.user.service.UserLoginUseCase;
 import br.com.jonasluis.backend_api.domain.user.service.UserRegisterUseCase;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +24,18 @@ import java.net.URI;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserRegisterUseCase userRegister;
-    @Autowired
-    private UserLoginUseCase userLogin;
-    @Autowired
-    private TokenRefreshUseCase tokenRefresh;
+
+    private final UserRegisterUseCase userRegister;
+
+    private final UserLoginUseCase userLogin;
+
+    private final TokenRefreshUseCase tokenRefresh;
+
+    public UserController(UserRegisterUseCase userRegister, UserLoginUseCase userLogin, TokenRefreshUseCase tokenRefresh) {
+        this.userRegister = userRegister;
+        this.userLogin = userLogin;
+        this.tokenRefresh = tokenRefresh;
+    }
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest request){

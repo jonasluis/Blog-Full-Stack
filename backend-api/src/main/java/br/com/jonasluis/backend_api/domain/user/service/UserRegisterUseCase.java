@@ -7,7 +7,7 @@ import br.com.jonasluis.backend_api.domain.user.entity.enums.UserRole;
 import br.com.jonasluis.backend_api.domain.user.mapper.UserMapper;
 import br.com.jonasluis.backend_api.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,16 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class UserRegisterUseCase {
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+
+    private final UserRepository userRepository;
+
+    public UserRegisterUseCase(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
 
     public User execute(UserRegisterRequest dto){
 
