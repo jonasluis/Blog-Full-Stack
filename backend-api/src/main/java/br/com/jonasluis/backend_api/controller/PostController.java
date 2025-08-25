@@ -5,7 +5,6 @@ import br.com.jonasluis.backend_api.domain.post.dto.PostCreateRequest;
 import br.com.jonasluis.backend_api.domain.post.dto.PostResponseDTO;
 import br.com.jonasluis.backend_api.domain.post.service.PostCreateUseCase;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,12 @@ import java.net.URI;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-    @Autowired
-    private PostCreateUseCase postCreate;
+
+    private final PostCreateUseCase postCreate;
+
+    public PostController(PostCreateUseCase postCreate) {
+        this.postCreate = postCreate;
+    }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
