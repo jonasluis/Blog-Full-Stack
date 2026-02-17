@@ -6,6 +6,7 @@ import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterRequest;
 import br.com.jonasluis.backend_api.domain.user.dto.UserRegisterResponse;
 import br.com.jonasluis.backend_api.domain.user.entity.User;
 import br.com.jonasluis.backend_api.domain.user.entity.enums.UserRole;
+import br.com.jonasluis.backend_api.domain.user.dto.UserResponse;
 import lombok.experimental.UtilityClass;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,6 +45,12 @@ public class UserMapper {
                 token,
                 refreshToken,
                 expiresAt
+        );
+    }
+    public static UserResponse toUserResponse(User user) {
+        return new UserResponse(
+                user.getId(),
+                user.getUsername()
         );
     }
 }

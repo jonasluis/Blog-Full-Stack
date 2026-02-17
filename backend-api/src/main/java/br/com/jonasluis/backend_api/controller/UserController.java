@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import br.com.jonasluis.backend_api.domain.user.dto.UserResponse;
+import br.com.jonasluis.backend_api.domain.user.service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 import java.net.URI;
 
@@ -30,6 +35,8 @@ public class UserController {
     private UserLoginUseCase userLogin;
     @Autowired
     private TokenRefreshUseCase tokenRefresh;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest request){
@@ -49,6 +56,12 @@ public class UserController {
     public ResponseEntity<TokenRefreshResponse> refreshToken(@RequestBody @Valid TokenRefreshRequest request) {
         var response = tokenRefresh.execute(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserResponse>> getUsers(){
+        var users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
 }
