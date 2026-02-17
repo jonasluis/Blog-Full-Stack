@@ -28,11 +28,13 @@ public class SecurityConfig {
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( authorize -> authorize
                     .requestMatchers(HttpMethod.POST,"/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/upload").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/posts").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/posts/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                        .requestMatchers("swagger-ui/**", "swagger-ui.html", "/v3/api-docs/**").permitAll()
                     .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
